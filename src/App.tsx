@@ -12,6 +12,7 @@ import TimerPage from "./pages/TimerPage";
 import ProgressPage from "./pages/ProgressPage";
 import AuthPage from "./pages/AuthPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import BreathingPage from "./pages/BreathingPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
