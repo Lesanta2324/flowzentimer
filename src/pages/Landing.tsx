@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Timer, Leaf, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MotivationalQuote } from '@/components/MotivationalQuote';
-import { BreathingExercise } from '@/components/BreathingExercise';
+import { Wind } from 'lucide-react';
 
 export default function Landing() {
   const features = [
