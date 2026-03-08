@@ -39,8 +39,8 @@ export default function ResetPasswordPage() {
       toast({ title: 'Error', description: 'Passwords do not match.', variant: 'destructive' });
       return;
     }
-    if (password.length < 6) {
-      toast({ title: 'Error', description: 'Password must be at least 6 characters.', variant: 'destructive' });
+    if (password.length < 8) {
+      toast({ title: 'Error', description: 'Password must be at least 8 characters.', variant: 'destructive' });
       return;
     }
 
@@ -102,7 +102,7 @@ export default function ResetPasswordPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 rounded-xl"
-                  minLength={6}
+                  minLength={8}
                   required
                 />
               </div>
@@ -119,7 +119,7 @@ export default function ResetPasswordPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="pl-10 rounded-xl"
-                  minLength={6}
+                  minLength={8}
                   required
                 />
               </div>
