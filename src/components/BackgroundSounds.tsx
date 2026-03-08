@@ -459,7 +459,7 @@ export function BackgroundSounds() {
             initial={{ opacity: 0, x: 20, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 20, scale: 0.9 }}
-            className="glass-card p-3 space-y-2 min-w-[140px]"
+            className="glass-card p-3 space-y-1 min-w-[160px] max-h-[70vh] overflow-y-auto"
           >
             <div className="flex items-center justify-between px-1 mb-1">
               <p className="text-xs font-heading font-semibold text-muted-foreground">🎵 Music</p>
