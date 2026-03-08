@@ -124,6 +124,7 @@ export function useTimer() {
     setTimeLeft(settings.breakDuration * 60);
     setIsRunning(true);
     setCurrentActivity(getRandomActivity());
+    setShowReflection(true);
     playSound();
 
     const today = getToday();
