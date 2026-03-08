@@ -55,7 +55,9 @@ export function useTimer() {
   const [timeLeft, setTimeLeft] = useState(settings.focusDuration * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [currentActivity, setCurrentActivity] = useState('');
+  const [showReflection, setShowReflection] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioRef = useRef<AudioContext | null>(null);
   const audioRef = useRef<AudioContext | null>(null);
 
   // Reset daily stats if new day
