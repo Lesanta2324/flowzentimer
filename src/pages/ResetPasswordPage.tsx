@@ -102,7 +102,7 @@ export default function ResetPasswordPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 rounded-xl"
-                  minLength={6}
+                  minLength={8}
                   required
                 />
               </div>
@@ -119,7 +119,7 @@ export default function ResetPasswordPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="pl-10 rounded-xl"
-                  minLength={6}
+                  minLength={8}
                   required
                 />
               </div>

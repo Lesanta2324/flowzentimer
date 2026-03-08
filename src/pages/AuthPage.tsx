@@ -210,7 +210,7 @@ export default function AuthPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 rounded-xl"
-                    minLength={6}
+                    minLength={8}
                     required
                   />
                 </div>
