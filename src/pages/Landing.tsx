@@ -39,7 +39,7 @@ export default function Landing() {
 
         <h1 className="text-4xl sm:text-5xl font-heading font-bold text-foreground mb-4 leading-tight">
           <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient_6s_ease_infinite]">
-            Mindful Break
+            FlowZen
           </span>
           <br />
           Timer

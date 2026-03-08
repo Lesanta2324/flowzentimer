@@ -19,7 +19,7 @@ export function MindfulCard({ activity }: MindfulCardProps) {
         <Leaf className="h-5 w-5 text-accent" />
       </div>
       <p className="text-foreground font-medium leading-relaxed">{activity}</p>
-      <p className="text-muted-foreground text-sm mt-3">Mindful Break</p>
+      <p className="text-muted-foreground text-sm mt-3">FlowZen</p>
     </motion.div>
   );
 }
