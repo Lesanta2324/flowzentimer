@@ -3,7 +3,6 @@ import { Flame, Trophy, Clock, Brain } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useMemo } from 'react';
 import { AchievementBadges } from '@/components/AchievementBadges';
-import { useMemo } from 'react';
 
 interface SessionStats {
   focusSessionsToday: number;
