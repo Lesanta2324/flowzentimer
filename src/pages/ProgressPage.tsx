@@ -137,6 +137,8 @@ export default function ProgressPage() {
             ))}
           </div>
         </motion.div>
+        {/* Achievement Badges */}
+        <AchievementBadges />
       </div>
     </div>
   );

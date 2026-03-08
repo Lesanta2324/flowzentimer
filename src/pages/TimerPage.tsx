@@ -6,6 +6,7 @@ import { SettingsPanel } from '@/components/SettingsPanel';
 import { SessionReflection } from '@/components/SessionReflection';
 import { CustomActivities, useCustomActivities } from '@/components/CustomActivities';
 import { BackgroundSounds } from '@/components/BackgroundSounds';
+import { DailyFocusGoal } from '@/components/DailyFocusGoal';
 import { useTimer } from '@/hooks/useTimer';
 import { motion } from 'framer-motion';
 
