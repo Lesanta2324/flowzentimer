@@ -91,6 +91,8 @@ export default function Landing() {
             </Link>
         ))}
       </motion.div>
+
+      <p className="text-xs text-muted-foreground/60 mt-12 relative z-10">Created by Caleb</p>
     </div>
   );
 }
