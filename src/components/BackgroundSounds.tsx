@@ -12,9 +12,17 @@ interface SoundOption {
 
 const SOUNDS: SoundOption[] = [
   { id: 'rain', label: 'Rain', emoji: '🌧️' },
-  { id: 'whitenoise', label: 'White Noise', emoji: '📻' },
   { id: 'forest', label: 'Forest', emoji: '🌲' },
-  { id: 'cafe', label: 'Cafe', emoji: '☕' },
+  { id: 'ocean', label: 'Ocean Waves', emoji: '🌊' },
+  { id: 'cafe', label: 'Cafe Ambience', emoji: '☕' },
+  { id: 'whitenoise', label: 'White Noise', emoji: '📻' },
+  { id: 'wind', label: 'Wind', emoji: '💨' },
+  { id: 'fireplace', label: 'Fireplace', emoji: '🔥' },
+  { id: 'piano', label: 'Soft Piano', emoji: '🎹' },
+  { id: 'birds', label: 'Nature Birds', emoji: '🐦' },
+  { id: 'crickets', label: 'Night Crickets', emoji: '🦗' },
+  { id: 'river', label: 'River Stream', emoji: '🏞️' },
+  { id: 'windchimes', label: 'Wind Chimes', emoji: '🎐' },
 ];
 
 // Generate ambient sounds using Web Audio API
