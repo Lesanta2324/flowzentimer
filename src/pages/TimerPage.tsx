@@ -6,6 +6,7 @@ import { SettingsPanel } from '@/components/SettingsPanel';
 import { SessionReflection } from '@/components/SessionReflection';
 import { CustomActivities, useCustomActivities } from '@/components/CustomActivities';
 import { BackgroundSounds } from '@/components/BackgroundSounds';
+import { DailyFocusGoal } from '@/components/DailyFocusGoal';
 import { useTimer } from '@/hooks/useTimer';
 import { motion } from 'framer-motion';
 
@@ -65,6 +66,11 @@ export default function TimerPage() {
           breaksTaken={stats.breaksTakenToday}
           currentStreak={stats.currentStreak}
         />
+
+        {/* Daily Focus Goal */}
+        <div className="w-full max-w-sm">
+          <DailyFocusGoal currentSessions={stats.focusSessionsToday} />
+        </div>
 
         {/* Custom Break Activities */}
         <div className="w-full max-w-sm">

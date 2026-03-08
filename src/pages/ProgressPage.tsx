@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Flame, Trophy, Clock, Brain } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useMemo } from 'react';
+import { AchievementBadges } from '@/components/AchievementBadges';
 
 interface SessionStats {
   focusSessionsToday: number;
@@ -135,6 +136,8 @@ export default function ProgressPage() {
             ))}
           </div>
         </motion.div>
+        {/* Achievement Badges */}
+        <AchievementBadges />
       </div>
     </div>
   );
