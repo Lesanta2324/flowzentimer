@@ -1,0 +1,45 @@
+import { Link, useLocation } from 'react-router-dom';
+import { Timer, BarChart3, Moon, Sun } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+interface NavbarProps {
+  isDark: boolean;
+  onToggleTheme: () => void;
+}
+
+export function Navbar({ isDark, onToggleTheme }: NavbarProps) {
+  const location = useLocation();
+
+  const navItems = [
+    { to: '/timer', icon: Timer, label: 'Timer' },
+    { to: '/progress', icon: BarChart3, label: 'Progress' },
+  ];
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40">
+      <div className="max-w-2xl mx-auto flex items-center justify-between px-4 h-14">
+        <Link to="/" className="font-heading font-bold text-lg text-foreground tracking-tight">
+          Mindful Break
+        </Link>
+
+        <div className="flex items-center gap-1">
+          {navItems.map((item) => (
+            <Link key={item.to} to={item.to}>
+              <Button
+                variant={location.pathname === item.to ? 'secondary' : 'ghost'}
+                size="sm"
+                className="rounded-xl gap-1.5 text-sm"
+              >
+                <item.icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{item.label}</span>
+              </Button>
+            </Link>
+          ))}
+          <Button variant="ghost" size="icon" className="rounded-xl ml-1" onClick={onToggleTheme}>
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
+    </nav>
+  );
+}
