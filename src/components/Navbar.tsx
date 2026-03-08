@@ -65,8 +65,9 @@ export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }
             </Button>
           ) : (
             <Link to="/auth">
-              <Button variant="ghost" size="icon" className="rounded-xl" title="Sign In">
+              <Button variant="ghost" size="sm" className="rounded-xl gap-1.5 text-sm">
                 <LogIn className="h-4 w-4" />
+                Sign In
               </Button>
             </Link>
           )}
