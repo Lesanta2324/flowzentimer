@@ -8,7 +8,7 @@ import { Wind } from 'lucide-react';
 export default function Landing() {
   const features = [
     { icon: Timer, title: 'Focus Timer', desc: 'Customizable Pomodoro sessions to boost productivity', to: '/timer' },
-    { icon: Leaf, title: 'Mindful Breaks', desc: 'Healthy activity suggestions during every break', to: '/timer' },
+    { icon: Leaf, title: 'Zen Breaks', desc: 'Healthy activity suggestions during every break', to: '/timer' },
     { icon: Wind, title: 'Breathing', desc: 'Guided breathing exercises to calm your mind', to: '/breathing' },
     { icon: BarChart3, title: 'Track Progress', desc: 'Monitor sessions, streaks, and weekly focus time', to: '/progress' },
   ];
