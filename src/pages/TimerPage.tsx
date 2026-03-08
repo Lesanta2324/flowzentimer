@@ -3,13 +3,14 @@ import { TimerControls } from '@/components/TimerControls';
 import { MindfulCard } from '@/components/MindfulCard';
 import { StatsBar } from '@/components/StatsBar';
 import { SettingsPanel } from '@/components/SettingsPanel';
+import { SessionReflection } from '@/components/SessionReflection';
 import { useTimer } from '@/hooks/useTimer';
 import { motion } from 'framer-motion';
 
 export default function TimerPage() {
   const {
     mode, timeLeft, isRunning, progress, currentActivity,
-    settings, stats, start, pause, reset, updateSettings,
+    settings, stats, showReflection, start, pause, reset, updateSettings, dismissReflection,
   } = useTimer();
 
   const isBreak = mode === 'break';
@@ -59,6 +60,12 @@ export default function TimerPage() {
           currentStreak={stats.currentStreak}
         />
       </motion.div>
+
+      {/* Post-session reflection */}
+      <SessionReflection
+        open={showReflection}
+        onClose={() => dismissReflection()}
+      />
     </div>
   );
 }

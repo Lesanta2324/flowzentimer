@@ -222,6 +222,10 @@ export function useTimer() {
   const totalDuration = mode === 'break' ? settings.breakDuration * 60 : settings.focusDuration * 60;
   const progress = 1 - timeLeft / totalDuration;
 
+  const dismissReflection = useCallback(() => {
+    setShowReflection(false);
+  }, []);
+
   return {
     mode,
     timeLeft,
@@ -230,9 +234,11 @@ export function useTimer() {
     currentActivity,
     settings,
     stats,
+    showReflection,
     start,
     pause,
     reset,
     updateSettings,
+    dismissReflection,
   };
 }
