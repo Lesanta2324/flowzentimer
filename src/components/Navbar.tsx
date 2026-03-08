@@ -24,9 +24,16 @@ export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40">
       <div className="max-w-2xl mx-auto flex items-center justify-between px-4 h-14">
-        <Link to="/" className="font-heading font-bold text-lg text-foreground tracking-tight">
-          Mindful Break
-        </Link>
+        <div className="flex items-center gap-2">
+          {showBack && (
+            <Button variant="ghost" size="icon" className="rounded-xl" onClick={() => navigate(-1)}>
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          )}
+          <Link to="/" className="font-heading font-bold text-lg text-foreground tracking-tight">
+            Mindful Break
+          </Link>
+        </div>
 
         <div className="flex items-center gap-1">
           {navItems.map((item) => (
