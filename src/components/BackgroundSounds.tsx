@@ -114,12 +114,14 @@ function createAmbientSound(ctx: AudioContext, type: string): { nodes: AudioNode
 }
 
 export function BackgroundSounds() {
-  const [activeSound, setActiveSound] = useState<string | null>(null);
+  const [activeSound, setActiveSound] = useState<string | null>('rain');
+  const [enabled, setEnabled] = useState(true);
   const [volume, setVolume] = useState(30);
   const [isOpen, setIsOpen] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
   const soundRef = useRef<{ nodes: AudioNode[]; stop: () => void } | null>(null);
   const gainRef = useRef<GainNode | null>(null);
+  const hasAutoPlayed = useRef(false);
 
   const stopSound = useCallback(() => {
     if (soundRef.current) {
@@ -136,13 +138,31 @@ export function BackgroundSounds() {
     stopSound();
     const result = createAmbientSound(ctxRef.current, id);
     soundRef.current = result;
-    // Find the gain node (first one)
     const gn = result.nodes.find((n) => n instanceof GainNode) as GainNode | undefined;
     if (gn) {
       gainRef.current = gn;
       gn.gain.value = volume / 100;
     }
   }, [volume, stopSound]);
+
+  // Auto-play on first user interaction (browsers block autoplay without gesture)
+  useEffect(() => {
+    if (hasAutoPlayed.current) return;
+    const startAudio = () => {
+      if (!hasAutoPlayed.current && enabled && activeSound) {
+        playSound(activeSound);
+        hasAutoPlayed.current = true;
+      }
+      document.removeEventListener('click', startAudio);
+      document.removeEventListener('keydown', startAudio);
+    };
+    document.addEventListener('click', startAudio);
+    document.addEventListener('keydown', startAudio);
+    return () => {
+      document.removeEventListener('click', startAudio);
+      document.removeEventListener('keydown', startAudio);
+    };
+  }, [enabled, activeSound, playSound]);
 
   useEffect(() => {
     if (gainRef.current) {
@@ -154,13 +174,22 @@ export function BackgroundSounds() {
     return () => stopSound();
   }, [stopSound]);
 
-  const toggleSound = (id: string) => {
-    if (activeSound === id) {
+  const toggleEnabled = () => {
+    if (enabled) {
       stopSound();
-      setActiveSound(null);
+      setEnabled(false);
     } else {
+      setEnabled(true);
+      if (activeSound) {
+        playSound(activeSound);
+      }
+    }
+  };
+
+  const selectSound = (id: string) => {
+    setActiveSound(id);
+    if (enabled) {
       playSound(id);
-      setActiveSound(id);
     }
   };
 
