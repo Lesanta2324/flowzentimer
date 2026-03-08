@@ -1,8 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Timer, BarChart3, Moon, Sun, ArrowLeft } from 'lucide-react';
+import { Timer, BarChart3, Moon, Sun, ArrowLeft, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ColorThemePicker } from '@/components/ColorThemePicker';
 import type { ColorTheme } from '@/hooks/useColorTheme';
+import { useAuth } from '@/hooks/useAuth';
 
 interface NavbarProps {
   isDark: boolean;
@@ -14,12 +15,18 @@ interface NavbarProps {
 export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const showBack = location.pathname !== '/';
 
   const navItems = [
     { to: '/timer', icon: Timer, label: 'Timer' },
     { to: '/progress', icon: BarChart3, label: 'Progress' },
   ];
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40">
@@ -52,6 +59,17 @@ export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }
           <Button variant="ghost" size="icon" className="rounded-xl" onClick={onToggleTheme}>
             {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
+          {user ? (
+            <Button variant="ghost" size="icon" className="rounded-xl" onClick={handleSignOut} title="Sign Out">
+              <LogOut className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Link to="/auth">
+              <Button variant="ghost" size="icon" className="rounded-xl" title="Sign In">
+                <LogIn className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
