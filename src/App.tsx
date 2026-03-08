@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
+import { BackgroundSounds } from "@/components/BackgroundSounds";
 import { useTheme } from "@/hooks/useTheme";
 import { useColorTheme } from "@/hooks/useColorTheme";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
@@ -29,6 +30,7 @@ const AppContent = () => {
         colorTheme={colorTheme}
         onColorThemeChange={setColorTheme}
       />
+      <BackgroundSounds />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/auth" element={<AuthPage />} />
