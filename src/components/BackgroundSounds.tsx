@@ -113,15 +113,27 @@ function createAmbientSound(ctx: AudioContext, type: string): { nodes: AudioNode
   return { nodes, stop: () => { try { source.stop(); } catch {} } };
 }
 
+function loadPref<T>(key: string, fallback: T): T {
+  try {
+    const v = localStorage.getItem(key);
+    return v !== null ? JSON.parse(v) : fallback;
+  } catch { return fallback; }
+}
+
 export function BackgroundSounds() {
-  const [activeSound, setActiveSound] = useState<string | null>('rain');
-  const [enabled, setEnabled] = useState(true);
-  const [volume, setVolume] = useState(30);
+  const [activeSound, setActiveSound] = useState<string | null>(() => loadPref('music-sound', 'rain'));
+  const [enabled, setEnabled] = useState(() => loadPref('music-enabled', true));
+  const [volume, setVolume] = useState(() => loadPref('music-volume', 30));
   const [isOpen, setIsOpen] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
   const soundRef = useRef<{ nodes: AudioNode[]; stop: () => void } | null>(null);
   const gainRef = useRef<GainNode | null>(null);
   const hasAutoPlayed = useRef(false);
+
+  // Persist preferences
+  useEffect(() => { localStorage.setItem('music-sound', JSON.stringify(activeSound)); }, [activeSound]);
+  useEffect(() => { localStorage.setItem('music-enabled', JSON.stringify(enabled)); }, [enabled]);
+  useEffect(() => { localStorage.setItem('music-volume', JSON.stringify(volume)); }, [volume]);
 
   const stopSound = useCallback(() => {
     if (soundRef.current) {
