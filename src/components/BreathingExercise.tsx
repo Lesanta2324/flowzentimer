@@ -90,14 +90,12 @@ export function BreathingExercise() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-2 cursor-pointer"
+            onClick={toggle}
           >
             <p className="text-xs text-muted-foreground leading-relaxed">
               Guided 4-4-4 breathing to calm your mind
             </p>
-            <Button size="sm" variant="outline" onClick={toggle} className="text-xs rounded-xl">
-              Try it now
-            </Button>
           </motion.div>
         )}
       </AnimatePresence>
