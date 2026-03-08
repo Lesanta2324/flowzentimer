@@ -114,12 +114,14 @@ function createAmbientSound(ctx: AudioContext, type: string): { nodes: AudioNode
 }
 
 export function BackgroundSounds() {
-  const [activeSound, setActiveSound] = useState<string | null>(null);
+  const [activeSound, setActiveSound] = useState<string | null>('rain');
+  const [enabled, setEnabled] = useState(true);
   const [volume, setVolume] = useState(30);
   const [isOpen, setIsOpen] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
   const soundRef = useRef<{ nodes: AudioNode[]; stop: () => void } | null>(null);
   const gainRef = useRef<GainNode | null>(null);
+  const hasAutoPlayed = useRef(false);
 
   const stopSound = useCallback(() => {
     if (soundRef.current) {
@@ -136,13 +138,31 @@ export function BackgroundSounds() {
     stopSound();
     const result = createAmbientSound(ctxRef.current, id);
     soundRef.current = result;
-    // Find the gain node (first one)
     const gn = result.nodes.find((n) => n instanceof GainNode) as GainNode | undefined;
     if (gn) {
       gainRef.current = gn;
       gn.gain.value = volume / 100;
     }
   }, [volume, stopSound]);
+
+  // Auto-play on first user interaction (browsers block autoplay without gesture)
+  useEffect(() => {
+    if (hasAutoPlayed.current) return;
+    const startAudio = () => {
+      if (!hasAutoPlayed.current && enabled && activeSound) {
+        playSound(activeSound);
+        hasAutoPlayed.current = true;
+      }
+      document.removeEventListener('click', startAudio);
+      document.removeEventListener('keydown', startAudio);
+    };
+    document.addEventListener('click', startAudio);
+    document.addEventListener('keydown', startAudio);
+    return () => {
+      document.removeEventListener('click', startAudio);
+      document.removeEventListener('keydown', startAudio);
+    };
+  }, [enabled, activeSound, playSound]);
 
   useEffect(() => {
     if (gainRef.current) {
@@ -154,13 +174,22 @@ export function BackgroundSounds() {
     return () => stopSound();
   }, [stopSound]);
 
-  const toggleSound = (id: string) => {
-    if (activeSound === id) {
+  const toggleEnabled = () => {
+    if (enabled) {
       stopSound();
-      setActiveSound(null);
+      setEnabled(false);
     } else {
+      setEnabled(true);
+      if (activeSound) {
+        playSound(activeSound);
+      }
+    }
+  };
+
+  const selectSound = (id: string) => {
+    setActiveSound(id);
+    if (enabled) {
       playSound(id);
-      setActiveSound(id);
     }
   };
 
@@ -174,13 +203,23 @@ export function BackgroundSounds() {
             exit={{ opacity: 0, x: 20, scale: 0.9 }}
             className="glass-card p-3 space-y-2 min-w-[140px]"
           >
-            <p className="text-xs font-heading font-semibold text-muted-foreground px-1">🎵 Music</p>
+            <div className="flex items-center justify-between px-1 mb-1">
+              <p className="text-xs font-heading font-semibold text-muted-foreground">🎵 Music</p>
+              <button
+                onClick={toggleEnabled}
+                className={`text-xs px-2 py-0.5 rounded-lg transition-colors ${
+                  enabled ? 'bg-primary/15 text-primary' : 'bg-muted text-muted-foreground'
+                }`}
+              >
+                {enabled ? 'On' : 'Off'}
+              </button>
+            </div>
             {SOUNDS.map((s) => (
               <button
                 key={s.id}
-                onClick={() => toggleSound(s.id)}
+                onClick={() => selectSound(s.id)}
                 className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors ${
-                  activeSound === s.id
+                  activeSound === s.id && enabled
                     ? 'bg-primary/15 text-primary font-medium'
                     : 'text-foreground hover:bg-muted/60'
                 }`}
@@ -189,7 +228,7 @@ export function BackgroundSounds() {
                 <span>{s.label}</span>
               </button>
             ))}
-            {activeSound && (
+            {activeSound && enabled && (
               <div className="px-1 pt-1">
                 <Slider
                   value={[volume]}
@@ -210,12 +249,12 @@ export function BackgroundSounds() {
         size="icon"
         onClick={() => setIsOpen(!isOpen)}
         className={`rounded-xl h-10 w-10 shadow-md ${
-          activeSound
+          enabled && activeSound
             ? 'bg-primary/15 text-primary border border-primary/20'
             : 'glass-card text-muted-foreground'
         }`}
       >
-        {activeSound ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+        {enabled && activeSound ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
       </Button>
     </div>
   );
