@@ -37,8 +37,9 @@ export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }
               <ArrowLeft className="h-4 w-4" />
             </Button>
           )}
-          <Link to="/" className="font-heading font-bold text-lg text-foreground tracking-tight">
-            Mindful Break
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/logo.png" alt="Mindful Break" className="h-7 w-7" />
+            <span className="font-heading font-bold text-lg text-foreground tracking-tight">Mindful Break</span>
           </Link>
         </div>
 
