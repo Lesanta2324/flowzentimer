@@ -30,6 +30,7 @@ const AppContent = () => {
         colorTheme={colorTheme}
         onColorThemeChange={setColorTheme}
       />
+      <BackgroundSounds />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/auth" element={<AuthPage />} />
