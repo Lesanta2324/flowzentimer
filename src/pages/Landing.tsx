@@ -68,7 +68,7 @@ export default function Landing() {
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-lg sm:max-w-2xl w-full relative z-10"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-16 max-w-lg sm:max-w-3xl w-full relative z-10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.7 }}
