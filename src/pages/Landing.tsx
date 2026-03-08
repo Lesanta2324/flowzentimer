@@ -34,7 +34,7 @@ export default function Landing() {
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
         >
-          <img src="/logo.png" alt="Mindful Break Logo" className="h-16 w-16 rounded-2xl shadow-lg shadow-primary/10" />
+          <img src="/logo.png" alt="Mindful Break Logo" className="h-24 w-24 rounded-2xl shadow-2xl shadow-primary/20 bg-card/50 p-2" />
         </motion.div>
 
         <h1 className="text-4xl sm:text-5xl font-heading font-bold text-foreground mb-4 leading-tight">
