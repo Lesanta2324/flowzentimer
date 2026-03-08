@@ -155,8 +155,8 @@ export default function AuthPage() {
             </>
           )}
 
-          <form onSubmit={handleEmailAuth} className="space-y-4">
-            {isSignUp && (
+          <form onSubmit={isForgotPassword ? handleForgotPassword : handleEmailAuth} className="space-y-4">
+            {isSignUp && !isForgotPassword && (
               <div className="space-y-2">
                 <Label htmlFor="name">Display Name</Label>
                 <div className="relative">
@@ -189,40 +189,64 @@ export default function AuthPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 rounded-xl"
-                  minLength={6}
-                  required
-                />
+            {!isForgotPassword && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  {!isSignUp && (
+                    <button
+                      type="button"
+                      onClick={() => setIsForgotPassword(true)}
+                      className="text-xs text-primary hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-10 rounded-xl"
+                    minLength={6}
+                    required
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             <Button
               type="submit"
               className="w-full rounded-xl h-11 bg-gradient-to-r from-primary to-primary/80"
               disabled={loading}
             >
-              {loading ? 'Please wait...' : isSignUp ? 'Sign Up' : 'Sign In'}
+              {loading ? 'Please wait...' : isForgotPassword ? 'Send Reset Link' : isSignUp ? 'Sign Up' : 'Sign In'}
             </Button>
           </form>
 
           <p className="text-sm text-muted-foreground text-center mt-4">
-            {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-            <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-primary font-medium hover:underline"
-            >
-              {isSignUp ? 'Sign In' : 'Sign Up'}
-            </button>
+            {isForgotPassword ? (
+              <button
+                onClick={() => setIsForgotPassword(false)}
+                className="text-primary font-medium hover:underline"
+              >
+                Back to Sign In
+              </button>
+            ) : (
+              <>
+                {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+                <button
+                  onClick={() => setIsSignUp(!isSignUp)}
+                  className="text-primary font-medium hover:underline"
+                >
+                  {isSignUp ? 'Sign In' : 'Sign Up'}
+                </button>
+              </>
+            )}
           </p>
         </div>
       </motion.div>
