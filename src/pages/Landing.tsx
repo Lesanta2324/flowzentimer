@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Timer, Leaf, BarChart3, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { MotivationalQuote } from '@/components/MotivationalQuote';
 
 export default function Landing() {
   const features = [
@@ -12,9 +13,12 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
-      {/* Subtle background orbs */}
-      <div className="absolute top-1/4 -left-32 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute bottom-1/4 -right-32 w-64 h-64 rounded-full bg-accent/5 blur-3xl" />
+      {/* Colorful animated orbs */}
+      <div className="absolute top-1/4 -left-20 w-72 h-72 rounded-full bg-primary/15 blur-3xl animate-pulse-soft" />
+      <div className="absolute bottom-1/3 -right-20 w-72 h-72 rounded-full bg-secondary/15 blur-3xl animate-pulse-soft" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-accent/8 blur-3xl" />
+      <div className="absolute top-10 right-1/4 w-40 h-40 rounded-full bg-primary/10 blur-2xl animate-breathe" />
+      <div className="absolute bottom-20 left-1/4 w-40 h-40 rounded-full bg-secondary/10 blur-2xl animate-breathe" />
 
       <motion.div
         className="text-center max-w-lg relative z-10"
@@ -23,7 +27,7 @@ export default function Landing() {
         transition={{ duration: 0.7 }}
       >
         <motion.div
-          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-6 shadow-lg shadow-primary/10"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
@@ -32,14 +36,30 @@ export default function Landing() {
         </motion.div>
 
         <h1 className="text-4xl sm:text-5xl font-heading font-bold text-foreground mb-4 leading-tight">
-          Mindful Break Timer
+          <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient_6s_ease_infinite]">
+            Mindful Break
+          </span>
+          <br />
+          Timer
         </h1>
-        <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+        <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
           Focus better, avoid burnout, and build consistent study habits with mindful breaks between sessions.
         </p>
 
+        {/* Rotating motivational quotes */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <MotivationalQuote />
+        </motion.div>
+
         <Link to="/timer">
-          <Button size="lg" className="rounded-2xl px-8 h-13 text-base shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all">
+          <Button
+            size="lg"
+            className="rounded-2xl px-8 h-13 text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 transition-all bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary"
+          >
             Start Focusing
           </Button>
         </Link>
@@ -54,12 +74,15 @@ export default function Landing() {
         {features.map((f, i) => (
           <motion.div
             key={f.title}
-            className="glass-card p-5 text-center"
+            className="glass-card p-5 text-center group hover:border-primary/30 transition-colors duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 + i * 0.1 }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
           >
-            <f.icon className="h-6 w-6 mx-auto text-primary mb-3" />
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 group-hover:bg-primary/15 transition-colors mb-3">
+              <f.icon className="h-5 w-5 text-primary" />
+            </div>
             <h3 className="font-heading font-semibold text-foreground text-sm mb-1">{f.title}</h3>
             <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
           </motion.div>

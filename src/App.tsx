@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { useTheme } from "@/hooks/useTheme";
+import { useColorTheme } from "@/hooks/useColorTheme";
 import Landing from "./pages/Landing";
 import TimerPage from "./pages/TimerPage";
 import ProgressPage from "./pages/ProgressPage";
@@ -14,10 +15,16 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const { isDark, toggle } = useTheme();
+  const { colorTheme, setColorTheme } = useColorTheme();
 
   return (
     <>
-      <Navbar isDark={isDark} onToggleTheme={toggle} />
+      <Navbar
+        isDark={isDark}
+        onToggleTheme={toggle}
+        colorTheme={colorTheme}
+        onColorThemeChange={setColorTheme}
+      />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/timer" element={<TimerPage />} />
