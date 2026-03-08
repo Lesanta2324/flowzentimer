@@ -6,9 +6,9 @@ import { MotivationalQuote } from '@/components/MotivationalQuote';
 
 export default function Landing() {
   const features = [
-    { icon: Timer, title: 'Focus Timer', desc: 'Customizable Pomodoro sessions to boost productivity' },
-    { icon: Leaf, title: 'Mindful Breaks', desc: 'Healthy activity suggestions during every break' },
-    { icon: BarChart3, title: 'Track Progress', desc: 'Monitor sessions, streaks, and weekly focus time' },
+    { icon: Timer, title: 'Focus Timer', desc: 'Customizable Pomodoro sessions to boost productivity', to: '/timer' },
+    { icon: Leaf, title: 'Mindful Breaks', desc: 'Healthy activity suggestions during every break', to: '/timer' },
+    { icon: BarChart3, title: 'Track Progress', desc: 'Monitor sessions, streaks, and weekly focus time', to: '/progress' },
   ];
 
   return (
