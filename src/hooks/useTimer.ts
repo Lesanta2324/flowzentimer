@@ -58,7 +58,6 @@ export function useTimer() {
   const [showReflection, setShowReflection] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioRef = useRef<AudioContext | null>(null);
-  const audioRef = useRef<AudioContext | null>(null);
 
   // Reset daily stats if new day
   useEffect(() => {
