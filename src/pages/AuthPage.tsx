@@ -117,10 +117,14 @@ export default function AuthPage() {
           </div>
 
           <h1 className="text-2xl font-heading font-bold text-foreground text-center mb-1">
-            {isSignUp ? 'Create Account' : 'Welcome Back'}
+            {isForgotPassword ? 'Reset Password' : isSignUp ? 'Create Account' : 'Welcome Back'}
           </h1>
           <p className="text-sm text-muted-foreground text-center mb-6">
-            {isSignUp ? 'Sign up to save your progress' : 'Sign in to continue your journey'}
+            {isForgotPassword
+              ? "Enter your email and we'll send a reset link"
+              : isSignUp
+                ? 'Sign up to save your progress'
+                : 'Sign in to continue your journey'}
           </p>
 
           <Button
