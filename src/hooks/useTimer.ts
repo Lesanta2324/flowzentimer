@@ -55,6 +55,7 @@ export function useTimer() {
   const [timeLeft, setTimeLeft] = useState(settings.focusDuration * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [currentActivity, setCurrentActivity] = useState('');
+  const [showReflection, setShowReflection] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioRef = useRef<AudioContext | null>(null);
 
@@ -122,6 +123,7 @@ export function useTimer() {
     setTimeLeft(settings.breakDuration * 60);
     setIsRunning(true);
     setCurrentActivity(getRandomActivity());
+    setShowReflection(true);
     playSound();
 
     const today = getToday();
@@ -219,6 +221,10 @@ export function useTimer() {
   const totalDuration = mode === 'break' ? settings.breakDuration * 60 : settings.focusDuration * 60;
   const progress = 1 - timeLeft / totalDuration;
 
+  const dismissReflection = useCallback(() => {
+    setShowReflection(false);
+  }, []);
+
   return {
     mode,
     timeLeft,
@@ -227,9 +233,11 @@ export function useTimer() {
     currentActivity,
     settings,
     stats,
+    showReflection,
     start,
     pause,
     reset,
     updateSettings,
+    dismissReflection,
   };
 }

@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { Timer, Leaf, BarChart3, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MotivationalQuote } from '@/components/MotivationalQuote';
+import { BreathingExercise } from '@/components/BreathingExercise';
 
 export default function Landing() {
   const features = [
     { icon: Timer, title: 'Focus Timer', desc: 'Customizable Pomodoro sessions to boost productivity', to: '/timer' },
     { icon: Leaf, title: 'Mindful Breaks', desc: 'Healthy activity suggestions during every break', to: '/timer' },
+    { icon: null, title: 'Breathing', desc: '', to: '' },
     { icon: BarChart3, title: 'Track Progress', desc: 'Monitor sessions, streaks, and weekly focus time', to: '/progress' },
   ];
 
@@ -66,27 +68,31 @@ export default function Landing() {
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-lg sm:max-w-2xl w-full relative z-10"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-16 max-w-lg sm:max-w-3xl w-full relative z-10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.7 }}
       >
         {features.map((f, i) => (
-          <Link key={f.title} to={f.to}>
-            <motion.div
-              className="glass-card p-5 text-center group hover:border-primary/30 transition-colors duration-300 cursor-pointer h-full"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.1 }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            >
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 group-hover:bg-primary/15 transition-colors mb-3">
-                <f.icon className="h-5 w-5 text-primary" />
-              </div>
-              <h3 className="font-heading font-semibold text-foreground text-sm mb-1">{f.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
-            </motion.div>
-          </Link>
+          f.icon === null ? (
+            <BreathingExercise key={f.title} />
+          ) : (
+            <Link key={f.title} to={f.to}>
+              <motion.div
+                className="glass-card p-5 text-center group hover:border-primary/30 transition-colors duration-300 cursor-pointer h-full"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.1 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              >
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 group-hover:bg-primary/15 transition-colors mb-3">
+                  <f.icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="font-heading font-semibold text-foreground text-sm mb-1">{f.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
+              </motion.div>
+            </Link>
+          )
         ))}
       </motion.div>
     </div>
