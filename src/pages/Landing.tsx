@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Timer, Leaf, BarChart3, Sparkles } from 'lucide-react';
+import { Timer, Leaf, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MotivationalQuote } from '@/components/MotivationalQuote';
 import { BreathingExercise } from '@/components/BreathingExercise';
@@ -29,12 +29,12 @@ export default function Landing() {
         transition={{ duration: 0.7 }}
       >
         <motion.div
-          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-6 shadow-lg shadow-primary/10"
+          className="inline-flex items-center justify-center mb-6"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
         >
-          <Sparkles className="h-8 w-8 text-primary" />
+          <img src="/logo.png" alt="Mindful Break Logo" className="h-16 w-16 rounded-2xl shadow-lg shadow-primary/10" />
         </motion.div>
 
         <h1 className="text-4xl sm:text-5xl font-heading font-bold text-foreground mb-4 leading-tight">
