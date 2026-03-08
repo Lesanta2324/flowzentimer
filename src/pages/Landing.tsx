@@ -9,7 +9,7 @@ export default function Landing() {
   const features = [
     { icon: Timer, title: 'Focus Timer', desc: 'Customizable Pomodoro sessions to boost productivity', to: '/timer' },
     { icon: Leaf, title: 'Mindful Breaks', desc: 'Healthy activity suggestions during every break', to: '/timer' },
-    { icon: null, title: 'Breathing', desc: '', to: '' },
+    { icon: Wind, title: 'Breathing', desc: 'Guided breathing exercises to calm your mind', to: '/breathing' },
     { icon: BarChart3, title: 'Track Progress', desc: 'Monitor sessions, streaks, and weekly focus time', to: '/progress' },
   ];
 
