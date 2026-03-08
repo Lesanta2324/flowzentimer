@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Timer, Leaf, BarChart3, Sparkles } from 'lucide-react';
+import { Timer, Leaf, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MotivationalQuote } from '@/components/MotivationalQuote';
 import { BreathingExercise } from '@/components/BreathingExercise';
