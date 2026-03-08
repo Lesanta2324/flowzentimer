@@ -80,7 +80,7 @@ export default function ResetPasswordPage() {
       >
         <div className="glass-card p-8">
           <div className="flex items-center justify-center mb-6">
-            <img src="/logo.png" alt="Mindful Break Logo" className="h-12 w-12 rounded-2xl shadow-lg shadow-primary/10" />
+            <img src="/logo.png" alt="FlowZen Logo" className="h-12 w-12 rounded-2xl shadow-lg shadow-primary/10" />
           </div>
 
           <h1 className="text-2xl font-heading font-bold text-foreground text-center mb-1">

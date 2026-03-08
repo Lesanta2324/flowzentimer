@@ -34,12 +34,12 @@ export default function Landing() {
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
         >
-          <img src="/logo.png" alt="Mindful Break Logo" className="h-24 w-24 rounded-2xl shadow-2xl shadow-primary/20 bg-card/50 p-2" />
+          <img src="/logo.png" alt="FlowZen Logo" className="h-24 w-24 rounded-2xl shadow-2xl shadow-primary/20 bg-card/50 p-2" />
         </motion.div>
 
         <h1 className="text-4xl sm:text-5xl font-heading font-bold text-foreground mb-4 leading-tight">
           <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient_6s_ease_infinite]">
-            Mindful Break
+            FlowZen
           </span>
           <br />
           Timer

@@ -38,8 +38,8 @@ export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }
             </Button>
           )}
           <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Mindful Break" className="h-9 w-9" />
-            <span className="font-heading font-bold text-lg text-foreground tracking-tight">Mindful Break</span>
+            <img src="/logo.png" alt="FlowZen" className="h-9 w-9" />
+            <span className="font-heading font-bold text-lg text-foreground tracking-tight">FlowZen</span>
           </Link>
         </div>
 
