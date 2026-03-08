@@ -1,13 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Timer, BarChart3, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ColorThemePicker } from '@/components/ColorThemePicker';
+import type { ColorTheme } from '@/hooks/useColorTheme';
 
 interface NavbarProps {
   isDark: boolean;
   onToggleTheme: () => void;
+  colorTheme: ColorTheme;
+  onColorThemeChange: (theme: ColorTheme) => void;
 }
 
-export function Navbar({ isDark, onToggleTheme }: NavbarProps) {
+export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }: NavbarProps) {
   const location = useLocation();
 
   const navItems = [
@@ -35,7 +39,8 @@ export function Navbar({ isDark, onToggleTheme }: NavbarProps) {
               </Button>
             </Link>
           ))}
-          <Button variant="ghost" size="icon" className="rounded-xl ml-1" onClick={onToggleTheme}>
+          <ColorThemePicker current={colorTheme} onChange={onColorThemeChange} />
+          <Button variant="ghost" size="icon" className="rounded-xl" onClick={onToggleTheme}>
             {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
         </div>
