@@ -3,13 +3,13 @@ import { motion } from 'framer-motion';
 import { Timer, Leaf, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MotivationalQuote } from '@/components/MotivationalQuote';
-import { BreathingExercise } from '@/components/BreathingExercise';
+import { Wind } from 'lucide-react';
 
 export default function Landing() {
   const features = [
     { icon: Timer, title: 'Focus Timer', desc: 'Customizable Pomodoro sessions to boost productivity', to: '/timer' },
     { icon: Leaf, title: 'Mindful Breaks', desc: 'Healthy activity suggestions during every break', to: '/timer' },
-    { icon: null, title: 'Breathing', desc: '', to: '' },
+    { icon: Wind, title: 'Breathing', desc: 'Guided breathing exercises to calm your mind', to: '/breathing' },
     { icon: BarChart3, title: 'Track Progress', desc: 'Monitor sessions, streaks, and weekly focus time', to: '/progress' },
   ];
 
@@ -74,9 +74,6 @@ export default function Landing() {
         transition={{ delay: 0.3, duration: 0.7 }}
       >
         {features.map((f, i) => (
-          f.icon === null ? (
-            <BreathingExercise key={f.title} />
-          ) : (
             <Link key={f.title} to={f.to}>
               <motion.div
                 className="glass-card p-5 text-center group hover:border-primary/30 transition-colors duration-300 cursor-pointer h-full"
@@ -92,7 +89,6 @@ export default function Landing() {
                 <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
               </motion.div>
             </Link>
-          )
         ))}
       </motion.div>
     </div>
