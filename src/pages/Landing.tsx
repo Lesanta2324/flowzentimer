@@ -74,9 +74,6 @@ export default function Landing() {
         transition={{ delay: 0.3, duration: 0.7 }}
       >
         {features.map((f, i) => (
-          f.icon === null ? (
-            <BreathingExercise key={f.title} />
-          ) : (
             <Link key={f.title} to={f.to}>
               <motion.div
                 className="glass-card p-5 text-center group hover:border-primary/30 transition-colors duration-300 cursor-pointer h-full"
@@ -92,7 +89,6 @@ export default function Landing() {
                 <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
               </motion.div>
             </Link>
-          )
         ))}
       </motion.div>
     </div>

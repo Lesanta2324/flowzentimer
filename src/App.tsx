@@ -33,6 +33,7 @@ const AppContent = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/breathing" element={<BreathingPage />} />
         <Route path="/timer" element={<TimerPage />} />
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="*" element={<NotFound />} />
