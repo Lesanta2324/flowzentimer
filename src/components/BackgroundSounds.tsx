@@ -174,7 +174,7 @@ export function BackgroundSounds() {
             exit={{ opacity: 0, x: 20, scale: 0.9 }}
             className="glass-card p-3 space-y-2 min-w-[140px]"
           >
-            <p className="text-xs font-heading font-semibold text-muted-foreground px-1">Sounds</p>
+            <p className="text-xs font-heading font-semibold text-muted-foreground px-1">🎵 Music</p>
             {SOUNDS.map((s) => (
               <button
                 key={s.id}
