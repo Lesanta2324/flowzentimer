@@ -1,5 +1,5 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Timer, BarChart3, Moon, Sun } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Timer, BarChart3, Moon, Sun, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ColorThemePicker } from '@/components/ColorThemePicker';
 import type { ColorTheme } from '@/hooks/useColorTheme';
@@ -13,6 +13,8 @@ interface NavbarProps {
 
 export function Navbar({ isDark, onToggleTheme, colorTheme, onColorThemeChange }: NavbarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const showBack = location.pathname !== '/';
 
   const navItems = [
     { to: '/timer', icon: Timer, label: 'Timer' },
