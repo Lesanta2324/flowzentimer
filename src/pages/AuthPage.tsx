@@ -111,9 +111,7 @@ export default function AuthPage() {
       >
         <div className="glass-card p-8">
           <div className="flex items-center justify-center mb-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 shadow-lg shadow-primary/10">
-              <Sparkles className="h-6 w-6 text-primary" />
-            </div>
+            <img src="/logo.png" alt="Mindful Break Logo" className="h-12 w-12 rounded-2xl shadow-lg shadow-primary/10" />
           </div>
 
           <h1 className="text-2xl font-heading font-bold text-foreground text-center mb-1">
