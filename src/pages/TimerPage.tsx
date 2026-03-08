@@ -67,6 +67,11 @@ export default function TimerPage() {
           currentStreak={stats.currentStreak}
         />
 
+        {/* Daily Focus Goal */}
+        <div className="w-full max-w-sm">
+          <DailyFocusGoal currentSessions={stats.focusSessionsToday} />
+        </div>
+
         {/* Custom Break Activities */}
         <div className="w-full max-w-sm">
           <CustomActivities
