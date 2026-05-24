@@ -556,6 +556,45 @@ export function BackgroundSounds() {
                 <span>{s.label}</span>
               </button>
             ))}
+            {customSounds.length > 0 && (
+              <div className="pt-1 mt-1 border-t border-border/40">
+                {customSounds.map((s) => (
+                  <div
+                    key={s.id}
+                    className={`group w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors cursor-pointer ${
+                      activeSound === s.id && enabled
+                        ? 'bg-primary/15 text-primary font-medium'
+                        : 'text-foreground hover:bg-muted/60'
+                    }`}
+                    onClick={() => selectSound(s.id)}
+                  >
+                    <span>🎵</span>
+                    <span className="flex-1 truncate">{s.label}</span>
+                    <button
+                      onClick={(e) => removeCustom(s.id, e)}
+                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
+                      aria-label="Remove"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-muted-foreground hover:bg-muted/60 transition-colors mt-1 border-t border-border/40 pt-2"
+            >
+              <Upload className="h-3.5 w-3.5" />
+              <span>Upload sound</span>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="audio/*"
+              className="hidden"
+              onChange={handleUpload}
+            />
             {activeSound && enabled && (
               <div className="px-1 pt-1">
                 <Slider
@@ -568,6 +607,7 @@ export function BackgroundSounds() {
                 />
               </div>
             )}
+
           </motion.div>
         )}
       </AnimatePresence>
