@@ -368,25 +368,45 @@ function loadPref<T>(key: string, fallback: T): T {
   } catch { return fallback; }
 }
 
+interface CustomSound {
+  id: string;
+  label: string;
+  dataUrl: string;
+}
+
+const MAX_CUSTOM_SIZE = 8 * 1024 * 1024; // 8 MB
+
 export function BackgroundSounds() {
   const [activeSound, setActiveSound] = useState<string | null>(() => loadPref('music-sound', 'rain'));
   const [enabled, setEnabled] = useState(() => loadPref('music-enabled', true));
   const [volume, setVolume] = useState(() => loadPref('music-volume', 30));
+  const [customSounds, setCustomSounds] = useState<CustomSound[]>(() => loadPref<CustomSound[]>('music-custom', []));
   const [isOpen, setIsOpen] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
   const soundRef = useRef<{ nodes: AudioNode[]; stop: () => void } | null>(null);
   const gainRef = useRef<GainNode | null>(null);
+  const audioElRef = useRef<HTMLAudioElement | null>(null);
   const hasAutoPlayed = useRef(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Persist preferences
   useEffect(() => { localStorage.setItem('music-sound', JSON.stringify(activeSound)); }, [activeSound]);
   useEffect(() => { localStorage.setItem('music-enabled', JSON.stringify(enabled)); }, [enabled]);
   useEffect(() => { localStorage.setItem('music-volume', JSON.stringify(volume)); }, [volume]);
+  useEffect(() => {
+    try { localStorage.setItem('music-custom', JSON.stringify(customSounds)); }
+    catch { toast.error('Storage full — could not save custom sound'); }
+  }, [customSounds]);
 
   const stopSound = useCallback(() => {
     if (soundRef.current) {
       soundRef.current.stop();
       soundRef.current = null;
+    }
+    if (audioElRef.current) {
+      audioElRef.current.pause();
+      audioElRef.current.src = '';
+      audioElRef.current = null;
     }
     gainRef.current = null;
   }, []);
@@ -396,6 +416,17 @@ export function BackgroundSounds() {
       ctxRef.current = new AudioContext();
     }
     stopSound();
+
+    const custom = customSounds.find((s) => s.id === id);
+    if (custom) {
+      const audio = new Audio(custom.dataUrl);
+      audio.loop = true;
+      audio.volume = volume / 100;
+      audio.play().catch(() => {});
+      audioElRef.current = audio;
+      return;
+    }
+
     const result = createAmbientSound(ctxRef.current, id);
     soundRef.current = result;
     const gn = result.nodes.find((n) => n instanceof GainNode) as GainNode | undefined;
@@ -403,7 +434,7 @@ export function BackgroundSounds() {
       gainRef.current = gn;
       gn.gain.value = volume / 100;
     }
-  }, [volume, stopSound]);
+  }, [volume, stopSound, customSounds]);
 
   // Auto-play on first user interaction (browsers block autoplay without gesture)
   useEffect(() => {
@@ -427,6 +458,9 @@ export function BackgroundSounds() {
   useEffect(() => {
     if (gainRef.current) {
       gainRef.current.gain.value = volume / 100;
+    }
+    if (audioElRef.current) {
+      audioElRef.current.volume = volume / 100;
     }
   }, [volume]);
 
@@ -452,6 +486,40 @@ export function BackgroundSounds() {
       playSound(id);
     }
   };
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('audio/')) {
+      toast.error('Please select an audio file');
+      return;
+    }
+    if (file.size > MAX_CUSTOM_SIZE) {
+      toast.error('File too large (max 8 MB)');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      const id = `custom-${Date.now()}`;
+      const label = file.name.replace(/\.[^.]+$/, '').slice(0, 24) || 'Custom';
+      setCustomSounds((prev) => [...prev, { id, label, dataUrl }]);
+      toast.success(`Added "${label}"`);
+    };
+    reader.onerror = () => toast.error('Failed to read file');
+    reader.readAsDataURL(file);
+  };
+
+  const removeCustom = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCustomSounds((prev) => prev.filter((s) => s.id !== id));
+    if (activeSound === id) {
+      stopSound();
+      setActiveSound(null);
+    }
+  };
+
 
   return (
     <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2">
