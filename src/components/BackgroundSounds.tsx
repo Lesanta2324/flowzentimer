@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
+
 
 interface SoundOption {
   id: string;
@@ -366,25 +368,45 @@ function loadPref<T>(key: string, fallback: T): T {
   } catch { return fallback; }
 }
 
+interface CustomSound {
+  id: string;
+  label: string;
+  dataUrl: string;
+}
+
+const MAX_CUSTOM_SIZE = 8 * 1024 * 1024; // 8 MB
+
 export function BackgroundSounds() {
   const [activeSound, setActiveSound] = useState<string | null>(() => loadPref('music-sound', 'rain'));
   const [enabled, setEnabled] = useState(() => loadPref('music-enabled', true));
   const [volume, setVolume] = useState(() => loadPref('music-volume', 30));
+  const [customSounds, setCustomSounds] = useState<CustomSound[]>(() => loadPref<CustomSound[]>('music-custom', []));
   const [isOpen, setIsOpen] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
   const soundRef = useRef<{ nodes: AudioNode[]; stop: () => void } | null>(null);
   const gainRef = useRef<GainNode | null>(null);
+  const audioElRef = useRef<HTMLAudioElement | null>(null);
   const hasAutoPlayed = useRef(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Persist preferences
   useEffect(() => { localStorage.setItem('music-sound', JSON.stringify(activeSound)); }, [activeSound]);
   useEffect(() => { localStorage.setItem('music-enabled', JSON.stringify(enabled)); }, [enabled]);
   useEffect(() => { localStorage.setItem('music-volume', JSON.stringify(volume)); }, [volume]);
+  useEffect(() => {
+    try { localStorage.setItem('music-custom', JSON.stringify(customSounds)); }
+    catch { toast.error('Storage full — could not save custom sound'); }
+  }, [customSounds]);
 
   const stopSound = useCallback(() => {
     if (soundRef.current) {
       soundRef.current.stop();
       soundRef.current = null;
+    }
+    if (audioElRef.current) {
+      audioElRef.current.pause();
+      audioElRef.current.src = '';
+      audioElRef.current = null;
     }
     gainRef.current = null;
   }, []);
@@ -394,6 +416,17 @@ export function BackgroundSounds() {
       ctxRef.current = new AudioContext();
     }
     stopSound();
+
+    const custom = customSounds.find((s) => s.id === id);
+    if (custom) {
+      const audio = new Audio(custom.dataUrl);
+      audio.loop = true;
+      audio.volume = volume / 100;
+      audio.play().catch(() => {});
+      audioElRef.current = audio;
+      return;
+    }
+
     const result = createAmbientSound(ctxRef.current, id);
     soundRef.current = result;
     const gn = result.nodes.find((n) => n instanceof GainNode) as GainNode | undefined;
@@ -401,7 +434,7 @@ export function BackgroundSounds() {
       gainRef.current = gn;
       gn.gain.value = volume / 100;
     }
-  }, [volume, stopSound]);
+  }, [volume, stopSound, customSounds]);
 
   // Auto-play on first user interaction (browsers block autoplay without gesture)
   useEffect(() => {
@@ -425,6 +458,9 @@ export function BackgroundSounds() {
   useEffect(() => {
     if (gainRef.current) {
       gainRef.current.gain.value = volume / 100;
+    }
+    if (audioElRef.current) {
+      audioElRef.current.volume = volume / 100;
     }
   }, [volume]);
 
@@ -450,6 +486,40 @@ export function BackgroundSounds() {
       playSound(id);
     }
   };
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('audio/')) {
+      toast.error('Please select an audio file');
+      return;
+    }
+    if (file.size > MAX_CUSTOM_SIZE) {
+      toast.error('File too large (max 8 MB)');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      const id = `custom-${Date.now()}`;
+      const label = file.name.replace(/\.[^.]+$/, '').slice(0, 24) || 'Custom';
+      setCustomSounds((prev) => [...prev, { id, label, dataUrl }]);
+      toast.success(`Added "${label}"`);
+    };
+    reader.onerror = () => toast.error('Failed to read file');
+    reader.readAsDataURL(file);
+  };
+
+  const removeCustom = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCustomSounds((prev) => prev.filter((s) => s.id !== id));
+    if (activeSound === id) {
+      stopSound();
+      setActiveSound(null);
+    }
+  };
+
 
   return (
     <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2">
@@ -486,6 +556,45 @@ export function BackgroundSounds() {
                 <span>{s.label}</span>
               </button>
             ))}
+            {customSounds.length > 0 && (
+              <div className="pt-1 mt-1 border-t border-border/40">
+                {customSounds.map((s) => (
+                  <div
+                    key={s.id}
+                    className={`group w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors cursor-pointer ${
+                      activeSound === s.id && enabled
+                        ? 'bg-primary/15 text-primary font-medium'
+                        : 'text-foreground hover:bg-muted/60'
+                    }`}
+                    onClick={() => selectSound(s.id)}
+                  >
+                    <span>🎵</span>
+                    <span className="flex-1 truncate">{s.label}</span>
+                    <button
+                      onClick={(e) => removeCustom(s.id, e)}
+                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
+                      aria-label="Remove"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-muted-foreground hover:bg-muted/60 transition-colors mt-1 border-t border-border/40 pt-2"
+            >
+              <Upload className="h-3.5 w-3.5" />
+              <span>Upload sound</span>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="audio/*"
+              className="hidden"
+              onChange={handleUpload}
+            />
             {activeSound && enabled && (
               <div className="px-1 pt-1">
                 <Slider
@@ -498,6 +607,7 @@ export function BackgroundSounds() {
                 />
               </div>
             )}
+
           </motion.div>
         )}
       </AnimatePresence>
