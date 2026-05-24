@@ -32,6 +32,7 @@ const AppContent = () => {
         onColorThemeChange={setColorTheme}
       />
       <BackgroundSounds />
+      <OnboardingTour />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/auth" element={<AuthPage />} />
