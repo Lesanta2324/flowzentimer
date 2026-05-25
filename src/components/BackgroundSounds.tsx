@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Volume2, VolumeX, Upload, X } from 'lucide-react';
+import { Volume2, VolumeX, Upload, X, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -480,6 +480,18 @@ export function BackgroundSounds() {
     }
   };
 
+  const moveCustom = (id: string, dir: -1 | 1, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCustomSounds((prev) => {
+      const idx = prev.findIndex((s) => s.id === id);
+      const next = idx + dir;
+      if (idx < 0 || next < 0 || next >= prev.length) return prev;
+      const copy = [...prev];
+      [copy[idx], copy[next]] = [copy[next], copy[idx]];
+      return copy;
+    });
+  };
+
   const selectSound = (id: string) => {
     setActiveSound(id);
     if (enabled) {
@@ -558,10 +570,10 @@ export function BackgroundSounds() {
             ))}
             {customSounds.length > 0 && (
               <div className="pt-1 mt-1 border-t border-border/40">
-                {customSounds.map((s) => (
+                {customSounds.map((s, i) => (
                   <div
                     key={s.id}
-                    className={`group w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors cursor-pointer ${
+                    className={`group w-full flex items-center gap-1 px-2 py-2 rounded-xl text-sm transition-colors cursor-pointer ${
                       activeSound === s.id && enabled
                         ? 'bg-primary/15 text-primary font-medium'
                         : 'text-foreground hover:bg-muted/60'
@@ -570,6 +582,22 @@ export function BackgroundSounds() {
                   >
                     <span>🎵</span>
                     <span className="flex-1 truncate">{s.label}</span>
+                    <button
+                      onClick={(e) => moveCustom(s.id, -1, e)}
+                      disabled={i === 0}
+                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground transition-opacity disabled:opacity-20"
+                      aria-label="Move up"
+                    >
+                      <ChevronUp className="h-3 w-3" />
+                    </button>
+                    <button
+                      onClick={(e) => moveCustom(s.id, 1, e)}
+                      disabled={i === customSounds.length - 1}
+                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground transition-opacity disabled:opacity-20"
+                      aria-label="Move down"
+                    >
+                      <ChevronDown className="h-3 w-3" />
+                    </button>
                     <button
                       onClick={(e) => removeCustom(s.id, e)}
                       className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
