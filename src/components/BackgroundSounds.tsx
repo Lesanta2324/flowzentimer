@@ -480,6 +480,18 @@ export function BackgroundSounds() {
     }
   };
 
+  const moveCustom = (id: string, dir: -1 | 1, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCustomSounds((prev) => {
+      const idx = prev.findIndex((s) => s.id === id);
+      const next = idx + dir;
+      if (idx < 0 || next < 0 || next >= prev.length) return prev;
+      const copy = [...prev];
+      [copy[idx], copy[next]] = [copy[next], copy[idx]];
+      return copy;
+    });
+  };
+
   const selectSound = (id: string) => {
     setActiveSound(id);
     if (enabled) {
