@@ -63,7 +63,7 @@ export default function AuthPage() {
           password,
           options: {
             data: { full_name: displayName },
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: window.location.origin + afterAuth,
           },
         });
         if (error) throw error;
@@ -74,7 +74,7 @@ export default function AuthPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate('/timer');
+        navigate(afterAuth, { replace: true });
       }
     } catch (error: any) {
       toast({
@@ -91,7 +91,7 @@ export default function AuthPage() {
     setLoading(true);
     try {
       const result = await lovable.auth.signInWithOAuth('google', {
-        redirect_uri: window.location.origin + '/timer',
+        redirect_uri: window.location.origin + afterAuth,
       });
       if (result.error) throw result.error;
     } catch (error: any) {

@@ -15,6 +15,7 @@ import ProgressPage from "./pages/ProgressPage";
 import AuthPage from "./pages/AuthPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import BreathingPage from "./pages/BreathingPage";
+import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,7 +41,9 @@ const AppContent = () => {
         <Route path="/breathing" element={<BreathingPage />} />
         <Route path="/timer" element={<TimerPage />} />
         <Route path="/progress" element={<ProgressPage />} />
+        <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </>
   );
