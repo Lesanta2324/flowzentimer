@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,11 +19,18 @@ export default function AuthPage() {
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
 
+  // Only same-origin relative paths are allowed as a post-login destination.
+  const rawNext = searchParams.get('next');
+  const nextPath = rawNext && /^\/(?!\/)/.test(rawNext) ? rawNext : null;
+  const afterAuth = nextPath ?? '/timer';
+
   useEffect(() => {
-    if (user) navigate('/timer');
-  }, [user, navigate]);
+    if (user) navigate(afterAuth, { replace: true });
+  }, [user, navigate, afterAuth]);
+
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
