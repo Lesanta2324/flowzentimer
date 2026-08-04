@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,11 +19,18 @@ export default function AuthPage() {
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
 
+  // Only same-origin relative paths are allowed as a post-login destination.
+  const rawNext = searchParams.get('next');
+  const nextPath = rawNext && /^\/(?!\/)/.test(rawNext) ? rawNext : null;
+  const afterAuth = nextPath ?? '/timer';
+
   useEffect(() => {
-    if (user) navigate('/timer');
-  }, [user, navigate]);
+    if (user) navigate(afterAuth, { replace: true });
+  }, [user, navigate, afterAuth]);
+
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +63,7 @@ export default function AuthPage() {
           password,
           options: {
             data: { full_name: displayName },
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: window.location.origin + afterAuth,
           },
         });
         if (error) throw error;
@@ -67,7 +74,7 @@ export default function AuthPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate('/timer');
+        navigate(afterAuth, { replace: true });
       }
     } catch (error: any) {
       toast({
@@ -84,7 +91,7 @@ export default function AuthPage() {
     setLoading(true);
     try {
       const result = await lovable.auth.signInWithOAuth('google', {
-        redirect_uri: window.location.origin + '/timer',
+        redirect_uri: window.location.origin + afterAuth,
       });
       if (result.error) throw result.error;
     } catch (error: any) {

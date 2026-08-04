@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://vsvptwvawdpikhpecssj.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "flowzen",
+      "version": "0.1.0",
+      "title": "FlowZen"
+    },
+    "tools": [
+      {
+        "name": "get_profile",
+        "title": "Get my FlowZen profile",
+        "description": "Get the signed-in FlowZen user's profile (display name, avatar, member since).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "update_display_name",
+        "title": "Update my display name",
+        "description": "Set the display name on the signed-in FlowZen user's profile.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "display_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 60,
+              "description": "New display name."
+            }
+          },
+          "required": [
+            "display_name"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "plan_focus_session",
+        "title": "Plan a focus session",
+        "description": "Build a FlowZen Pomodoro plan for a block of available time: how many focus/break cycles fit, and the total focused minutes.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "available_minutes": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 600,
+              "description": "Total time available, in minutes."
+            },
+            "focus_minutes": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 120,
+              "default": 25,
+              "description": "Length of each focus session."
+            },
+            "break_minutes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "default": 5,
+              "description": "Length of each break."
+            }
+          },
+          "required": [
+            "available_minutes"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "suggest_break_activity",
+        "title": "Suggest a mindful break activity",
+        "description": "Suggest one or more short mindful break activities from FlowZen's library, for use between focus sessions.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5,
+              "default": 1,
+              "description": "How many distinct activities to suggest (1-5)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
